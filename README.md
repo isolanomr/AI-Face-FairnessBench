@@ -59,7 +59,7 @@ train.csv and test.csv is formatted:
 | Gender                     | Gender label: 1 - Male, 0 - Female                                  |
 | Age                        | Age label: 0 - Child, 1 - Youth, 3 - Adult, 4 - Middle-aged, 5-Senior|
 | Skin Tone                  | Skin Tone label: Monk Skin Tone Scale             |
-| Intersection               | 0-(Male,Light), 1-(Male,Medium), 2-(Male,Dark), 3-(Female,Light), 4-(Female,Medium), 5-(Female,Dark)|
+| Intersection               | 0-(Female,Light), 1-(Female,Medium), 2-(Female,Dark), 3-(Male,Light), 4-(Male,Medium), 5-(Male,Dark)|
 | Target                     | Label indicating real (0) or fake (1) image                         |
 
 ### Instructions
