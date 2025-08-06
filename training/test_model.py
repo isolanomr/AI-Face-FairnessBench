@@ -4,8 +4,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 from log_utils import Logger
 import torch.backends.cudnn as cudnn
-from dataset.pair_dataset import pairDataset
-from dataset.datasets_train import ImageDataset_Train, ImageDataset_Test
+from dataset.datasets_train import ImageDataset_Test
 import csv
 import argparse
 from tqdm import tqdm
@@ -19,6 +18,7 @@ parser = argparse.ArgumentParser("Example")
 
 parser.add_argument('--test_batchsize', type=int, default=32, help="test batch size")
 parser.add_argument('--seed', type=int, default=5)
+parser.add_argument('--device', type=str, default='cpu')
 parser.add_argument('--gpu', type=str, default='1')
 parser.add_argument('--datapath', type=str,
                     default='../dataset/')
@@ -48,7 +48,7 @@ from transform import default_data_transforms as data_transforms
 test_transforms = get_albumentations_transforms([''])
 
 
-device = torch.device('cuda:0')
+device = torch.device(args.device)
 
 # prepare the model (detector)
 model_class = DETECTOR[args.model]
@@ -96,7 +96,6 @@ def evaluate(model):
                 pred = output['cls']
                 pred = pred.cpu().data.numpy().tolist()
     
-
                 pred_list += pred
                 label_list += labels.cpu().data.numpy().tolist()
 
