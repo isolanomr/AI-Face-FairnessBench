@@ -128,13 +128,13 @@ def main():
     model = model_class()
     model.to(device)
 
-    state_dict = torch.load(args.checkpoints, map_location=torch.device('cuda:0'))
+    state_dict = torch.load(args.checkpoints, map_location=device)
     model.load_state_dict(state_dict)
-    # temp_model = "checkpoints/"+args.model+'_cpu.pth'
-    # torch.save(model.state_dict(), temp_model)
+    temp_model = "checkpoints/"+args.model+'_cpu.pth'
+    torch.save(model.state_dict(), temp_model)
 
     print('Model would be evaluated here...')
-    evaluate(model)
+    # evaluate(model)
 
 
 if __name__ == '__main__':
