@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser("Example")
 
 parser.add_argument('--test_batchsize', type=int, default=32, help="test batch size")
 parser.add_argument('--seed', type=int, default=5)
-parser.add_argument('--device', type=str, default='cpu')
+parser.add_argument('--device', type=str, default='cuda:0')
 parser.add_argument('--gpu', type=str, default='1')
 parser.add_argument('--datapath', type=str,
                     default='../dataset/')
@@ -128,9 +128,12 @@ def main():
     model = model_class()
     model.to(device)
 
-    state_dict = torch.load(args.checkpoints)
+    state_dict = torch.load(args.checkpoints, map_location=torch.device('cuda:0'))
     model.load_state_dict(state_dict)
+    # temp_model = "checkpoints/"+args.model+'_cpu.pth'
+    # torch.save(model.state_dict(), temp_model)
 
+    print('Model would be evaluated here...')
     evaluate(model)
 
 
