@@ -130,8 +130,19 @@ def main():
 
     state_dict = torch.load(args.checkpoints, map_location=device)
     model.load_state_dict(state_dict)
-    temp_model = "checkpoints/"+args.model+'_cpu.pth'
-    torch.save(model.state_dict(), temp_model)
+    # temp_model = "checkpoints/"+args.model+'_cpu.pth'
+    # torch.save(model.state_dict(), temp_model)
+
+    img = np.random.randint(0, 255, size=(256, 256, 3), dtype=np.int32)
+    img = img.astype(np.float32)
+    img = (img / 255. - 0.5) / 0.5  # torch style norm
+    img = img.transpose((2, 0, 1))
+    img = torch.from_numpy(img).unsqueeze(0).float()
+    print(img.shape)
+
+    torch.onnx.export(model, img, f'checkpoints/{args.model}.onnx',
+                      input_names=["image"], keep_initializers_as_inputs=False,
+                      verbose=False, opset_version=17)
 
     print('Model would be evaluated here...')
     # evaluate(model)

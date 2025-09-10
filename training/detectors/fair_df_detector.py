@@ -50,7 +50,7 @@ class FairDetector(AbstractDetector):
         # head
 
         specific_task_number = 4
-        fair_task_number = 8
+        fair_task_number = 6
 
         self.head_spe = Head(
             in_f=self.half_fingerprint_dim,
@@ -135,8 +135,8 @@ class FairDetector(AbstractDetector):
         }
         return loss_func
 
-    def features(self, data_dict: dict) -> torch.tensor:
-        cat_data = data_dict['image']
+    def features(self, cat_data) -> torch.tensor:
+        # cat_data = data_dict['image']
         # encoder
         f_all = self.encoder_f.features(cat_data)
         c_all = self.encoder_c.features(cat_data)
@@ -292,15 +292,16 @@ class FairDetector(AbstractDetector):
 
         pass
 
-    def forward(self, data_dict: dict, inference=False) -> dict:
+    # def forward(self, data_dict: dict, inference=False) -> dict:
+    def forward(self, img, inference=True) -> dict:
         # split the features into the content and forgery,fairness
-        features = self.features(data_dict)
+        # features = self.features(data_dict)
+        features = self.features(img)
         forgery_features, content_features, fair_features = features[
             'forgery'], features['content'], features['fairness']
 
         # get the prediction by classifier (split the common and specific forgery)
         f_spe, f_share = self.classifier(forgery_features)
-        
         f_fair = self.block_fair(fair_features)
         fused_features = self.adain(f_fair, f_share)  # [16, 256, 8, 8]
 
